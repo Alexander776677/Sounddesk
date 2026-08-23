@@ -1,0 +1,24 @@
+kind = "mobile"
+previewPath = "/"
+title = "SoundDeck"
+description = "Eine native Android-Soundboard-App mit persistenten Sound-Zeilen, internem Audiospeicher, Hold-to-play, einmaliger Wiedergabe, Loop und Hintergrundwiedergabe über einen Android-Foreground-Media-Service."
+version = "1.0.0"
+id = "artifacts/sounddeck"
+router = "expo-domain"
+
+[[services]]
+name = "expo"
+ensurePreviewReachable = "/status"
+paths = [ "/" ]
+localPort = 23109
+
+[services.development]
+run = "pnpm --filter @workspace/sounddeck run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sounddeck", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/sounddeck", "run", "serve" ]
+
+[services.env]
+PORT = "23109"
+BASE_PATH = "/"
