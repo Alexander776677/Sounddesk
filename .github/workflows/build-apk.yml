@@ -43,10 +43,14 @@ jobs:
 
       - name: Generate Android Project
         working-directory: artifacts/sounddeck
-        run: pnpm exec expo prebuild --platform android --clean
+        run: pnpm exec expo prebuild --platform android --clean --no-install
         env:
           CI: 1
           EXPO_NO_TELEMETRY: 1
+          EXPO_NO_GIT_STATUS: 1
+
+      - name: Install Updated Dependencies
+        run: pnpm install --no-frozen-lockfile
 
       - name: Make Gradle executable
         working-directory: artifacts/sounddeck
@@ -61,3 +65,4 @@ jobs:
         with:
           name: SoundDeck-APK
           path: artifacts/sounddeck/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
