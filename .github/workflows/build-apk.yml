@@ -44,6 +44,25 @@ jobs:
       - name: Install Babel Preset
         working-directory: artifacts/sounddeck
         run: pnpm add -D babel-preset-expo
+
+      - name: Configure Babel for Hermes
+        working-directory: artifacts/sounddeck
+        run: |
+          cat > babel.config.js <<'EOF'
+          module.exports = function (api) {
+            api.cache(true);
+            return {
+              presets: [
+                [
+                  'babel-preset-expo',
+                  {
+                    unstable_transformProfile: 'hermes-v0'
+                  }
+                ]
+              ]
+            };
+          };
+          EOF
               
       - name: Generate Android Project
         working-directory: artifacts/sounddeck
