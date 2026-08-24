@@ -35,19 +35,22 @@ jobs:
         run: pnpm install
 
       - name: Generate Android Project
-        run: pnpm exec expo prebuild --platform android --non-interactive
+        working-directory: artifacts/sounddeck
+        run: pnpm exec expo prebuild --platform android
         env:
+          CI: 1
           EXPO_NO_TELEMETRY: 1
 
       - name: Make Gradle executable
+        working-directory: artifacts/sounddeck
         run: chmod +x android/gradlew
 
       - name: Build APK
-        working-directory: android
+        working-directory: artifacts/sounddeck/android
         run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SoundDeck-APK
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: artifacts/sounddeck/android/app/build/outputs/apk/debug/app-debug.apk
