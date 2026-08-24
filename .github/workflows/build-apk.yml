@@ -23,7 +23,7 @@ jobs:
           cache: pnpm
 
       - name: Setup Java
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
@@ -34,9 +34,16 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      - name: Fix Expo Dependencies
+        working-directory: artifacts/sounddeck
+        run: pnpm exec expo install --fix --pnpm
+        env:
+          CI: 1
+          EXPO_NO_TELEMETRY: 1
+
       - name: Generate Android Project
         working-directory: artifacts/sounddeck
-        run: pnpm exec expo prebuild --platform android
+        run: pnpm exec expo prebuild --platform android --clean
         env:
           CI: 1
           EXPO_NO_TELEMETRY: 1
