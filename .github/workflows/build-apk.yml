@@ -40,7 +40,11 @@ jobs:
         env:
           CI: 1
           EXPO_NO_TELEMETRY: 1
-
+          
+      - name: Install Babel Preset
+        working-directory: artifacts/sounddeck
+        run: pnpm add -D babel-preset-expo
+              
       - name: Generate Android Project
         working-directory: artifacts/sounddeck
         run: pnpm exec expo prebuild --platform android --clean --no-install
@@ -59,6 +63,8 @@ jobs:
       - name: Build APK
         working-directory: artifacts/sounddeck/android
         run: ./gradlew assembleRelease
+        env:
+          NODE_ENV: production
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
